@@ -84,6 +84,7 @@ workflows:
       - apply:
           requires:
             - hold-apply
+      - aws-cli-example
       - plan-destroy:
           requires:
             - apply
