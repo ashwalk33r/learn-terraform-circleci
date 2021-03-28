@@ -74,11 +74,11 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - aws-cli-example
-        - name: preapply
+      - aws-cli-example:
+          name: "preapply"
       - plan-apply:
           requires:
-            - aws-cli-example
+            - preapply
       - hold-apply:
           type: approval
           requires:
@@ -86,8 +86,8 @@ workflows:
       - apply:
           requires:
             - hold-apply
-      - aws-cli-example
-          - name: postapply
+      - aws-cli-example:
+          name: "postapply"
       - plan-destroy:
           requires:
             - apply
