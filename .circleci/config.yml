@@ -4,6 +4,14 @@ orbs:
   aws-cli: circleci/aws-cli@1.4.1
 
 jobs:
+  aws-cli-example:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: example
+      - run: aws s3api list-buckets --query "Buckets[].Name"
+
   plan-apply:
     working_directory: /tmp/project
     docker:
@@ -62,24 +70,15 @@ jobs:
             terraform apply -auto-approve tfdestroy
 
 
-commands:
-  aws-s3-bucket-list:
-    description: "AWS list S3 buckets"
-    executor: aws-cli/default
-    steps:
-      - checkout
-      - aws-cli/setup:
-          profile-name: example
-      - run: aws s3api list-buckets --query "Buckets[].Name"
-
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - aws-s3-bucket-list
+      - aws-cli-example
+        - name: preapply
       - plan-apply:
           requires:
-            - aws-s3-bucket-list
+            - aws-cli-example
       - hold-apply:
           type: approval
           requires:
@@ -87,7 +86,8 @@ workflows:
       - apply:
           requires:
             - hold-apply
-      - aws-s3-bucket-list
+      - aws-cli-example
+          - name: postapply
       - plan-destroy:
           requires:
             - apply
