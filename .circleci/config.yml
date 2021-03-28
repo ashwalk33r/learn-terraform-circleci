@@ -73,8 +73,7 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - aws-cli-example:
-          context: aws
+      - aws-cli-example
       - plan-apply:
           requires:
             - aws-cli-example
