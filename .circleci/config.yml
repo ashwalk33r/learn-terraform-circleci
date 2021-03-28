@@ -8,6 +8,8 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
+      - aws-cli/setup:
+          profile-name: example
       - run: aws s3api list-buckets --query "Buckets[].Name"
 
   plan-apply:
@@ -71,7 +73,8 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - aws-cli-example
+      - aws-cli-example:
+          context: aws
       - plan-apply:
           requires:
             - aws-cli-example
