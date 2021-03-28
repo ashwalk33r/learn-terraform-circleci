@@ -6,6 +6,12 @@ terraform {
     }
   }
   required_version = "~> 0.14"
+
+  backend "s3" {
+    bucket = "e3c24409-4af0-aa7e-a1fc-1a6089cb345d-backend"
+    key    = "terraform/webapp/terraform.tfstate"
+    region = "eu-central-1"
+  }
 }
 
 provider "aws" {
