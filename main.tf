@@ -8,7 +8,7 @@ terraform {
   required_version = "~> 0.14"
 
   backend "s3" {
-    bucket = "e3c24409-4af0-aa7e-a1fc-1a6089cb345d-backend"
+    bucket = "372ef7ee-cd05-c48a-2313-47f5bd38f1e4-backend"
     key    = "terraform/webapp/terraform.tfstate"
     region = "eu-central-1"
   }
