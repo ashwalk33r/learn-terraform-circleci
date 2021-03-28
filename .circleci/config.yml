@@ -71,12 +71,10 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - aws:
-          jobs:
-            - aws-cli-example
+      - aws-cli-example
       - plan-apply:
           requires:
-            - aws
+            - aws-cli-example
       - hold-apply:
           type: approval
           requires:
