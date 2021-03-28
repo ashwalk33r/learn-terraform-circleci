@@ -1,6 +1,15 @@
 version: 2
 
+orbs:
+  node: circleci/aws-cli@1.4.1
+
 jobs:
+  aws-cli-example:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - run: aws s3api list-buckets --query "Buckets[].Name"
+
   plan-apply:
     working_directory: /tmp/project
     docker:
@@ -62,7 +71,12 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply
+      - aws:
+          jobs:
+            - aws-cli-example
+      - plan-apply:
+          requires:
+            - aws
       - hold-apply:
           type: approval
           requires:
